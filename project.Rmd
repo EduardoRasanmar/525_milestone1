@@ -1,0 +1,21 @@
+```{r}
+library(arrow)
+library(dplyr)
+
+base_path <- "data"
+
+filepathcsv <- file.path(base_path, "combined_data.csv")
+filepathparquet <- file.path(base_path, "combined_data.parquet")
+filepathparquetr <- file.path(base_path, "combined_data_r.parquet")
+
+
+filetest <- arrow::open_dataset(filepathcsv, format="csv") |>
+  select("time", "lat_min", "lat_max", "lon_min", "lon_max", "rain (mm/day)", "model")
+
+eda <- filetest |>
+  count(model, sort = TRUE) |>
+  collect()
+
+eda
+```
+
